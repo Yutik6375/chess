@@ -98,7 +98,7 @@ public class MyFrame extends JFrame implements ActionListener {
 				this.add(btn[i][j]);
 
 				switch (i) {
-				case 0:
+				case 1:
 					btn[i][j].setIcon(Bpawn);
 					break;
 
@@ -106,7 +106,7 @@ public class MyFrame extends JFrame implements ActionListener {
 					btn[i][j].setIcon(Wpawn);
 					break;
 
-				case 1:
+				case 0:
 					switch (j) {
 					case 0:
 						btn[i][j].setIcon(Brook);
@@ -201,44 +201,52 @@ public class MyFrame extends JFrame implements ActionListener {
 			s2 = (JButton) e.getSource();
 			int exImg[] = new int[4];
 			if (s1.getIcon() != null && s2.getIcon() != null) {
-				
-				exImg=getPosition(s1,s2);
+
+				exImg = getPosition(s1, s2);
 				// killing piece
 				if (whiteMove == true && isClrWhite((ImageIcon) s1.getIcon()) == true
 						&& isClrWhite((ImageIcon) s2.getIcon()) == false) {
 					///
-					if(isMovableHere(getPosition(s1,s2),movesPossible(whatPieceisThis((ImageIcon) s1.getIcon()),getPosition(s1,s2)))) {
+					if (isMovableHere(getPosition(s1, s2),
+							movesPossible(whatPieceisThis((ImageIcon) s1.getIcon()), getPosition(s1, s2)))) {
 						btn[exImg[2]][exImg[3]].setIcon(btn[exImg[0]][exImg[1]].getIcon());
 						btn[exImg[0]][exImg[1]].setIcon(null);
+						whiteMove = false;
 					}
-					whiteMove = false;
+
 				} else if (whiteMove == false && isClrWhite((ImageIcon) s1.getIcon()) == false
 						&& isClrWhite((ImageIcon) s2.getIcon()) == true) {
 					///
-					btn[exImg[2]][exImg[3]].setIcon(btn[exImg[0]][exImg[1]].getIcon());
-					btn[exImg[0]][exImg[1]].setIcon(null);
-					whiteMove = true;
+					if (isMovableHere(getPosition(s1, s2),
+							movesPossible(whatPieceisThis((ImageIcon) s1.getIcon()), getPosition(s1, s2)))) {
+						btn[exImg[2]][exImg[3]].setIcon(btn[exImg[0]][exImg[1]].getIcon());
+						btn[exImg[0]][exImg[1]].setIcon(null);
+						whiteMove = true;
+					}
+
 				}
 			} else if (s1.getIcon() != null && s2.getIcon() == null) {
 				// move piece to empty space
-				exImg=getPosition(s1,s2);
-				
+				exImg = getPosition(s1, s2);
+
 				if (whiteMove == true && isClrWhite((ImageIcon) s1.getIcon()) == true) {
 					///
-					if(isMovableHere(getPosition(s1,s2),movesPossible(whatPieceisThis((ImageIcon) s1.getIcon()),getPosition(s1,s2)))) {
+					if (isMovableHere(getPosition(s1, s2),
+							movesPossible(whatPieceisThis((ImageIcon) s1.getIcon()), getPosition(s1, s2)))) {
 						btn[exImg[2]][exImg[3]].setIcon(btn[exImg[0]][exImg[1]].getIcon());
 						btn[exImg[0]][exImg[1]].setIcon(null);
+						whiteMove = false;
 					}
-					whiteMove = false;
+
 				} else if (whiteMove == false && isClrWhite((ImageIcon) s1.getIcon()) == false) {
 					///
-					
-					if(isMovableHere(getPosition(s1,s2),movesPossible(whatPieceisThis((ImageIcon) s1.getIcon()),getPosition(s1,s2)))) {
+
+					if (isMovableHere(getPosition(s1, s2),
+							movesPossible(whatPieceisThis((ImageIcon) s1.getIcon()), getPosition(s1, s2)))) {
 						btn[exImg[2]][exImg[3]].setIcon(btn[exImg[0]][exImg[1]].getIcon());
 						btn[exImg[0]][exImg[1]].setIcon(null);
+						whiteMove = true;
 					}
-					
-					whiteMove = true;
 
 				}
 			}
@@ -306,14 +314,14 @@ public class MyFrame extends JFrame implements ActionListener {
 		return index;
 	}
 
-	//(whatPisT,getP)
+	// (whatPisT,getP)
 	public int[] movesPossible(int p, int[] index) {
 
 		int[] mvsPss = new int[64];
 		int i = index[0];
 		int j = index[1];
 		int a = 0;
-		
+
 		switch (p) {
 
 		case 0:
@@ -322,20 +330,20 @@ public class MyFrame extends JFrame implements ActionListener {
 
 				if (index[0] == 6) {
 
-					if (btn[i--][j].getIcon() == null) {
+					if (obe(i - 1, j) && btn[i--][j].getIcon() == null) {
 						mvsPss[a] = i;
 						mvsPss[a + 1] = j;
 						a++;
 
 					}
-					if (btn[i--][j].getIcon() == null) {
+					if (obe(i - 1, j) && btn[i--][j].getIcon() == null) {
 						mvsPss[a] = i;
 						mvsPss[a + 1] = j;
 						a++;
 
 					}
 				} else {
-					if (btn[i--][j].getIcon() == null) {
+					if (obe(i - 1, j) && btn[i--][j].getIcon() == null) {
 						mvsPss[a] = i;
 						mvsPss[a + 1] = j;
 						a++;
@@ -344,14 +352,14 @@ public class MyFrame extends JFrame implements ActionListener {
 				}
 				////////////////////////////////////////////////
 
-				if (btn[index[0] - 1][index[1] - 1].getIcon() != null) {
+				if (obe(index[0] - 1, index[1] - 1) && btn[index[0] - 1][index[1] - 1].getIcon() != null) {
 					mvsPss[a] = i;
 					mvsPss[a + 1] = j;
 					a++;
 
 				}
 
-				if (btn[index[0] - 1][index[1] + 1].getIcon() != null) {
+				if (obe(index[0] - 1, index[1] + 1) && btn[index[0] - 1][index[1] + 1].getIcon() != null) {
 					mvsPss[a] = i;
 					mvsPss[a + 1] = j;
 					a++;
@@ -362,20 +370,20 @@ public class MyFrame extends JFrame implements ActionListener {
 
 				if (index[0] == 1) {
 
-					if (btn[i++][j].getIcon() == null) {
+					if (obe(i + 1, j) && btn[i++][j].getIcon() == null) {
 						mvsPss[a] = i;
 						mvsPss[a + 1] = j;
 						a++;
 
 					}
-					if (btn[i++][j].getIcon() == null) {
+					if (obe(i + 1, j) && btn[i++][j].getIcon() == null) {
 						mvsPss[a] = i;
 						mvsPss[a + 1] = j;
 						a++;
 
 					}
 				} else {
-					if (btn[i++][j].getIcon() == null) {
+					if (obe(i + 1, j) && btn[i++][j].getIcon() == null) {
 						mvsPss[a] = i;
 						mvsPss[a + 1] = j;
 						a++;
@@ -384,14 +392,14 @@ public class MyFrame extends JFrame implements ActionListener {
 				}
 				////////////////////////////////////////////////
 
-				if (btn[index[0] + 1][index[1] + 1].getIcon() != null) {
+				if (obe(index[0] + 1, index[1] + 1) && btn[index[0] + 1][index[1] + 1].getIcon() != null) {
 					mvsPss[a] = i;
 					mvsPss[a + 1] = j;
 					a++;
 					;
 				}
 
-				if (btn[index[0] + 1][index[1] - 1].getIcon() != null) {
+				if (obe(index[0] + 1, index[1] - 1) && btn[index[0] + 1][index[1] - 1].getIcon() != null) {
 					mvsPss[a] = i;
 					mvsPss[a + 1] = j;
 					a++;
@@ -402,7 +410,7 @@ public class MyFrame extends JFrame implements ActionListener {
 
 		case 1:
 			// rook
-			while (btn[i][j++].getIcon() == null) {
+			while (obe(i, j + 1) && btn[i][j++].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -413,7 +421,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0];
 			j = index[1];
 
-			while (btn[i][j--].getIcon() == null) {
+			while (obe(i, j - 1) && btn[i][j--].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -424,7 +432,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0];
 			j = index[1];
 
-			while (btn[i++][j].getIcon() == null) {
+			while (obe(i + 1, j) && btn[i++][j].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -435,7 +443,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0];
 			j = index[1];
 
-			while (btn[i--][j].getIcon() == null) {
+			while (obe(i - 1, j) && btn[i--][j].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -450,56 +458,56 @@ public class MyFrame extends JFrame implements ActionListener {
 
 		case 2:
 			// knight
-			if (btn[index[0] + 1][index[1] + 2].getIcon() == null) {
+			if (obe(index[0] + 1, index[1] + 2) && btn[index[0] + 1][index[1] + 2].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
 
 			}
 
-			if (btn[index[0] - 1][index[1] + 2].getIcon() == null) {
+			if (obe(index[0] - 1, index[1] + 2) && btn[index[0] - 1][index[1] + 2].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
 
 			}
 
-			if (btn[index[0] + 1][index[1] - 2].getIcon() == null) {
+			if (obe(index[0] + 1, index[1] - 2) && btn[index[0] + 1][index[1] - 2].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
 
 			}
 
-			if (btn[index[0] - 1][index[1] - 2].getIcon() == null) {
+			if (obe(index[0] - 1, index[1] - 2) && btn[index[0] - 1][index[1] - 2].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
 
 			}
 
-			if (btn[index[0] + 2][index[1] - 1].getIcon() == null) {
+			if (obe(index[0] + 2, index[1] - 1) && btn[index[0] + 2][index[1] - 1].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
 
 			}
 
-			if (btn[index[0] + 2][index[1] + 1].getIcon() == null) {
+			if (obe(index[0] + 2, index[1] + 1) && btn[index[0] + 2][index[1] + 1].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
 
 			}
 
-			if (btn[index[0] - 2][index[1] - 1].getIcon() == null) {
+			if (obe(index[0] - 2, index[1] - 1) && btn[index[0] - 2][index[1] - 1].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
 
 			}
 
-			if (btn[index[0] - 2][index[1] + 1].getIcon() == null) {
+			if (obe(index[0] - 2, index[1] + 1) && btn[index[0] - 2][index[1] + 1].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -510,7 +518,7 @@ public class MyFrame extends JFrame implements ActionListener {
 
 		case 3:
 			// bishop
-			while (btn[i++][j++].getIcon() == null) {
+			while (obe(i + 1, j + 1) && btn[i++][j++].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -521,7 +529,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0];
 			j = index[1];
 
-			while (btn[i++][j--].getIcon() == null) {
+			while (obe(i + 1, j - 1) && btn[i++][j--].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -532,7 +540,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0];
 			j = index[1];
 
-			while (btn[i--][j++].getIcon() == null) {
+			while (obe(i - 1, j + 1) && btn[i--][j++].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -543,7 +551,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0];
 			j = index[1];
 
-			while (btn[i--][j--].getIcon() == null) {
+			while (obe(i - 1, j - 1) && btn[i--][j--].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -559,7 +567,7 @@ public class MyFrame extends JFrame implements ActionListener {
 		case 4:
 			// queen
 			// bishop
-			while (btn[i++][j++].getIcon() == null) {
+			while (obe(i + 1, j + 1) && btn[i++][j++].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -570,7 +578,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0];
 			j = index[1];
 
-			while (btn[i++][j--].getIcon() == null) {
+			while (obe(i + 1, j - 1) && btn[i++][j--].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -581,7 +589,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0];
 			j = index[1];
 
-			while (btn[i--][j++].getIcon() == null) {
+			while (obe(i - 1, j + 1) && btn[i--][j++].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -592,7 +600,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0];
 			j = index[1];
 
-			while (btn[i--][j--].getIcon() == null) {
+			while (obe(i - 1, j - 1) && btn[i--][j--].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -604,7 +612,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			j = index[1];
 
 			// rook
-			while (btn[i][j++].getIcon() == null) {
+			while (obe(i, j + 1) && btn[i][j++].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -615,7 +623,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0];
 			j = index[1];
 
-			while (btn[i][j--].getIcon() == null) {
+			while (obe(i, j - 1) && btn[i][j--].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -626,7 +634,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0];
 			j = index[1];
 
-			while (btn[i++][j].getIcon() == null) {
+			while (obe(i + 1, j) && btn[i++][j].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -637,7 +645,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0];
 			j = index[1];
 
-			while (btn[i--][j].getIcon() == null) {
+			while (obe(i - 1, j) && btn[i--][j].getIcon() == null) {
 				mvsPss[a] = i;
 				mvsPss[a + 1] = j;
 				a++;
@@ -655,7 +663,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0] - 1;
 			j = index[1] - 1;
 			for (int x = 0; x < 3; x++) {
-				if (btn[i][j].getIcon() == null) {
+				if (obe(i, j) && btn[i][j].getIcon() == null) {
 					mvsPss[a] = i;
 					mvsPss[a + 1] = j;
 					a++;
@@ -669,7 +677,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0];
 			j = index[1] - 1;
 			for (int x = 0; x < 3; x++) {
-				if (btn[i][j].getIcon() == null) {
+				if (obe(i, j) && btn[i][j].getIcon() == null) {
 					mvsPss[a] = i;
 					mvsPss[a + 1] = j;
 					a++;
@@ -683,7 +691,7 @@ public class MyFrame extends JFrame implements ActionListener {
 			i = index[0] + 1;
 			j = index[1] - 1;
 			for (int x = 0; x < 3; x++) {
-				if (btn[i][j].getIcon() == null) {
+				if (obe(i, j) && btn[i][j].getIcon() == null) {
 					mvsPss[a] = i;
 					mvsPss[a + 1] = j;
 					a++;
@@ -694,17 +702,28 @@ public class MyFrame extends JFrame implements ActionListener {
 			mvsPss[a + 1] = j;
 			break;
 		}
+
 		return mvsPss;
 	}
 
-	//(getPos,movesP)
-	public boolean isMovableHere(int[] index,int[] mvsPss) {
-		for(int i =0;i<64;i=i+2) {
-			if(mvsPss[i]==index[2]&&mvsPss[i+1]==index[3]) {
+	// (getPos,movesP)
+	public boolean isMovableHere(int[] index, int[] mvsPss) {
+		for (int i = 0; i < 64; i = i + 2) {
+			if (mvsPss[i] == index[2] && mvsPss[i + 1] == index[3]) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	public boolean obe(int i, int j) {
+
+		if (i >= 0 && j >= 0 && i <= 7 && j <= 7) {
+			return true;
+		}
+
+		return false;
+
 	}
 
 }
